@@ -1,17 +1,26 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container-fluid" id="wrapper">
+    <Header></Header>
+    <main class="container-fluid">
+      <router-view></router-view>
+    </main>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Vue from "vue";
+import Header from "@/components/elements/Header";
+import Footer from "@/components/elements/Footer";
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+Vue.use(VueLoading);
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Header, Footer
   }
 }
 </script>

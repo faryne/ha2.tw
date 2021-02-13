@@ -1,0 +1,43 @@
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+Vue.use(VueRouter)
+
+const routes = [
+    {
+        name: "rates",
+        path: "/rates",
+        component: () => import("./components/pages/rates/index")
+    },
+    {
+        name: "yandere.tags",
+        path: "/yandere/tags",
+        component: () => import("./components/pages/yandere/TagsList")
+    },
+    {
+        name: "dmm.videos",
+        path: "/dmm/videos",
+        component: () => import("./components/pages/dmm/SearchResult"),
+        props: {
+            PageType: "video"
+        }
+    },
+    {
+        name: "dmm.actresses",
+        path: "/dmm/actresses",
+        component: () => import("./components/pages/dmm/SearchResult"),
+        props: {
+            PageType: "actress"
+        }
+    },
+    // 預設首頁
+    {
+        "name": "main",
+        "path": "*",
+        "component": () => import("./components/HelloWorld")
+    }
+];
+
+export default new VueRouter({
+    routes
+})
