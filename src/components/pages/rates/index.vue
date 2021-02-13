@@ -67,6 +67,7 @@ export default {
       banks: {
         "Mega": "兆豐銀行",
         "BOT": "台灣銀行",
+        "esun": "玉山銀行"
       },
       currencies: {
         "AUD": "澳元",
@@ -80,6 +81,7 @@ export default {
         "JPY": "日圓",
         "KRW": "韓元",
         "MOP": "澳門元",
+        "MXN": "墨西哥披索",
         "MYR": "馬來西亞令吉",
         "NZD": "紐元",
         "PHP": "菲律賓披索",
