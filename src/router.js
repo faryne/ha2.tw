@@ -10,6 +10,16 @@ const routes = [
         component: () => import("./components/pages/rates/index")
     },
     {
+        name: "hololive.vtuber",
+        path: "/hololive/:id",
+        component: () => import("./components/pages/vtubers/vtuber")
+    },
+    {
+        name: "hololive",
+        path: "/hololive",
+        component: () => import("./components/pages/vtubers/index")
+    },
+    {
         name: "yandere.tags",
         path: "/yandere/tags",
         component: () => import("./components/pages/yandere/TagsList")
