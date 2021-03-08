@@ -1,101 +1,97 @@
 <template>
   <div>
-    <div class="tab">
-      <router-link :class="{ tablinks: true, active: PageType == 'video' }" :to="{name: 'dmm.videos'}">影片搜尋</router-link>
-      <router-link :class="{ tablinks: true, active: PageType == 'actress' }" :to="{name: 'dmm.actresses'}">女優搜尋</router-link>
-    </div>
     <form class="form">
       <div class="form-group" v-if="PageType == 'video'">
         <label>發行起訖日</label>
         <div class="input-group">
-          <input type="date" class="form-control">
+          <input type="date" class="form-control search-option" id="a">
           <span class="input-group-addon">～</span>
-          <input type="date" class="form-control">
+          <input type="date" class="form-control search-option" id="b">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>標題</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="c">
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>標籤</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="d">
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>品牌</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="e">
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>出演女優</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="f">
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>系列</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="g">
       </div>
       <div class-="form-group" v-if="PageType == 'video'">
         <label>監督</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="h">
       </div>
       <div class="form-group" v-if="PageType == 'video'">
         <label>片長</label>
         <div class="input-group">
-          <input type="number" class="form-control" min="0">
+          <input type="number" class="form-control search-option" min="0" id="i">
           <span class="input-group-addon">～</span>
-          <input type="number" class="form-control" min="0">
+          <input type="number" class="form-control search-option" min="0" id="j">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>罩杯</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="k">
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>胸圍</label>
         <div class="input-group">
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="l">
           <span class="input-group-addon">～</span>
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="m">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>腰圍</label>
         <div class="input-group">
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="n">
           <span class="input-group-addon">～</span>
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="o">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>臀圍</label>
         <div class="input-group">
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="p">
           <span class="input-group-addon">～</span>
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="q">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>身高</label>
         <div class="input-group">
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="r">
           <span class="input-group-addon">～</span>
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control search-option" id="s">
         </div>
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>血型</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control search-option" id="t">
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>出生年</label>
-        <input type="number" min="0" class="form-control">
+        <input type="number" min="0" class="form-control search-option" id="u">
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>出生月</label>
-        <input type="number" min="1" max="12" class="form-control">
+        <input type="number" min="1" max="12" class="form-control search-option" id="v">
       </div>
       <div class="form-group" v-if="PageType == 'actress'">
         <label>出生日</label>
-        <input type="number" min="1" max="31" class="form-control">
+        <input type="number" min="1" max="31" class="form-control search-option" id="w" >
       </div>
       <div class="form-group">
         <button class="btn btn-primary" @click.stop.prevent="doSearch(false)">搜尋</button>
@@ -173,34 +169,5 @@ export default {
 </script>
 
 <style scoped>
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
 
-/* Style the buttons that are used to open the tab content */
-.tab a {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-.tab a:hover {
-  background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab a.active {
-  background-color: #ccc;
-}
-.display-block {
-  display: block;
-}
 </style>

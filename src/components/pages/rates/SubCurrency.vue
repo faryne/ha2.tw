@@ -1,19 +1,15 @@
 <template>
-  <dl :class="currency.base">
-    <dt>{{currency.base}}</dt>
-    <dd>
-      <div style="display: table">
-        <div style="display: table-cell; width: 120px">現金買入</div>
-        <div style="display: table-cell">{{currency.buy_rate}}</div>
-      </div>
-    </dd>
-    <dd>
-      <div style="display: table">
-        <div style="display: table-cell; width: 120px">現金賣出</div>
-        <div style="display: table-cell">{{currency.sell_rate}}</div>
-      </div>
-    </dd>
-  </dl>
+  <div class="currrency-item">
+    <div class="date-items" v-for="(d1, k1) in rawdata" :key="k1">
+      <h5>{{k1}}</h5>
+      <dl>
+        <dt>{{currency}}</dt>
+        <dd v-for="(d2, k2) in d1" :key="k2">
+          {{k2}} - {{d2.buy_rate}} - {{d2.sell_rate}}
+        </dd>
+      </dl>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -21,6 +17,10 @@ export default {
   name: "SubCurrency",
   props: {
     currency: {
+      type: String,
+      required: true
+    },
+    rawdata: {
       type: Object,
       required: true
     }

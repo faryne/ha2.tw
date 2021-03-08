@@ -10,20 +10,12 @@
             <input type="date" class="form-control" v-model="end_date">
           </div>
         </div>
-<!--        <div class="form-group">-->
-<!--          <label>貨幣</label>-->
-<!--          <select class="form-control">-->
-<!--            <option value="">全部</option>-->
-<!--            <option v-for="(v, k) in currencies" :value="k" :key="v">{{v}} - {{k}}</option>-->
-<!--          </select>-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--          <label>銀行</label>-->
-<!--          <select class="form-control">-->
-<!--            <option value="">全部</option>-->
-<!--            <option v-for="(v,k) in banks" :value="k" :key="k">{{v}}</option>-->
-<!--          </select>-->
-<!--        </div>-->
+        <div class="form-group">
+          <label>貨幣</label>
+          <select class="form-control" v-model="cur" multiple>
+            <option selected v-for="(v, k) in currencies" :value="k" :key="v">{{v}} - {{k}}</option>
+          </select>
+        </div>
 
 <!--        <div class="radio">-->
 <!--          <label><input type="radio" class="" />資料表</label>-->
@@ -34,14 +26,8 @@
       </form>
     </div>
     <div class="col-md-9">
-      <div v-for="(service, d) in rates" :key="d">
-        <h4>{{d}}</h4>
-        <div v-for="(raw, to) in service" :key="d + ':' +raw +':' + to" class="bank">
-          <h5>{{banks[to]}}</h5>
-          <div style="display: table">
-            <sub-currency v-for="base in raw.TWD" :key="d + ':' +raw +':' + to + ':' + base.base" :currency="base"></sub-currency>
-          </div>
-        </div>
+      <div v-for="(c1, k1) in rates" :key="k1">
+        <sub-currency :currency="k1" :rawdata="c1"></sub-currency>
       </div>
     </div>
   </div>
@@ -51,6 +37,7 @@
 import http from "@/assets/js/http";
 // import MainCurrency from "@/components/pages/rates/MainCurrency";
 import SubCurrency from "@/components/pages/rates/SubCurrency";
+import currency from "@/assets/js/currency";
 
 let dateFormat = require("dateformat")
 const d1 = dateFormat(new Date(), "yyyy-mm-dd")
@@ -64,41 +51,16 @@ export default {
   data(){
     return {
       rates: {},
-      banks: {
-        "Mega": "兆豐銀行",
-        "BOT": "台灣銀行",
-        "esun": "玉山銀行"
-      },
-      currencies: {
-        "AUD": "澳元",
-        "CAD": "加元",
-        "CHF": "瑞士法郎",
-        "CNY": "人民幣",
-        "EUR": "歐元",
-        "GBP": "英鎊",
-        "HKD": "港元",
-        "IDR": "印尼盧布",
-        "JPY": "日圓",
-        "KRW": "韓元",
-        "MOP": "澳門元",
-        "MXN": "墨西哥披索",
-        "MYR": "馬來西亞令吉",
-        "NZD": "紐元",
-        "PHP": "菲律賓披索",
-        "SEK": "瑞典克朗",
-        "SGD": "新加坡元",
-        "THB": "泰銖",
-        "USD": "美元",
-        "VND": "越南盾",
-        "ZAR": "南非幣",
-      },
       begin_date: d1.toString(),
-      end_date: d1.toString()
+      end_date: d1.toString(),
+      cur: [],
+      banks: currency.banks,
+      currencies: currency.currencies
     };
   },
   methods: {
     async getLatest(){
-      let req = await http.get("/api/opendata/rates?begin_date=" + d1);
+      let req = await http.get("/api/opendata/rates/v2?begin_date=" + d1);
       this.rates = req.response.rates;
     },
     async getByDateRange() {
@@ -109,7 +71,12 @@ export default {
       if (this.end_date != null) {
         params.push('end_date=' + this.end_date)
       }
-      let url = "/api/opendata/rates";
+      if (this.cur.length > 0) {
+        for (let i in this.cur) {
+          params.push('currencies[]=' + this.cur[i]);
+        }
+      }
+      let url = "/api/opendata/rates/v2";
       if (params.length > 0) {
         url += "?" + params.join("&");
       }

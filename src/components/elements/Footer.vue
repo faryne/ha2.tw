@@ -1,5 +1,5 @@
 <template>
-  <footer style="margin-top:20px; font-size:12px; border-top:1px solid #ccc;padding:5px;">
+  <footer>
     <p><a :href="AUTHOR_URL">{{AUTHOR_SITE}}</a> / <a href="http://www.faryne.tw/" target="_blank">Faryne</a></p>
   </footer>
 </template>
@@ -17,5 +17,11 @@ export default {
 </script>
 
 <style scoped>
-
+footer {
+  margin-top:20px;
+  font-size:12px;
+  border-top:1px solid #ccc;
+  padding:5px;
+  clear: both;
+}
 </style>

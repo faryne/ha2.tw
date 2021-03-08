@@ -6,6 +6,13 @@
     </main>
     <Footer></Footer>
   </div>
+<!--  <div class="container-fluid" id="wrapper">-->
+<!--    <Header></Header>-->
+<!--    <main class="container-fluid">-->
+<!--      <router-view></router-view>-->
+<!--    </main>-->
+<!--    <Footer></Footer>-->
+<!--  </div>-->
 </template>
 
 <script>
