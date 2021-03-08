@@ -39,9 +39,9 @@
               <p>{{live.info.snippet.description|returnLimitWords(0, 100)}}</p>
             </b-media>
           </div>
-          <div v-else>
+          <b-card v-else>
             沒有直播資訊
-          </div>
+          </b-card>
         </b-overlay>
       </b-col>
 
