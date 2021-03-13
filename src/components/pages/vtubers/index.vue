@@ -1,13 +1,13 @@
 <template>
   <b-container style="margin-top: 20px">
-    <b-row>
+    <b-row v-if="vtubers.length > 0">
       <b-overlay :show="vtubers_show == false">
-        <a href="#" @click.prevent="getVtuber(v.id)" v-for="v in vtubers" :key="v.etag">
-          <b-avatar variant="primary" class="mr-3 vtuber-avatar" :title="v.snippet.title" :src="v.snippet.thumbnails.medium.url"></b-avatar>
+        <a href="#" @click.prevent="getVtuber(v.id)" v-for="(v,k) in vtubers" :key="k">
+          <b-avatar v-if="v !== null" variant="primary" class="mr-3 vtuber-avatar" :title="v.snippet.title" :src="v.snippet.thumbnails.medium.url"></b-avatar>
         </a>
       </b-overlay>
     </b-row>
-    <b-row style="margin-top: 50px">
+    <b-row style="margin-top: 50px" v-if="vtuber.id !== 'undefined'">
       <b-col md="4" lg="3">
         <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
           <b-img rounded :src="vtuber.snippet.thumbnails.medium.url"/>
@@ -81,7 +81,7 @@ export default {
   },
   async created() {
     await this.getVtubers();
-    await this.getVideos()
+    await this.getVideos();
   },
   methods: {
     async getVtubers() {
