@@ -34,7 +34,7 @@
                 <b-link target="_blank" :href="live.video_id|getYoutubeLink('video')">
                   {{live.info.snippet.title}}
                 </b-link>
-                {{live.started_at|returnUTCDate}}
+                {{live.started_at|returnLocalDate}}
               </h5>
               <p>{{live.info.snippet.description|returnLimitWords(0, 100)}}</p>
             </b-media>
@@ -68,7 +68,7 @@ export default {
   filters: {
     numberFormat: int.format,
     returnLimitWords: string.returnLimitWords,
-    returnUTCDate: date.returnUTCDate,
+    returnLocalDate: date.returnLocalDate,
     getYoutubeLink($id, $type){
       switch ($type) {
         case 'video':
