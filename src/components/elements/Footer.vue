@@ -1,6 +1,9 @@
 <template>
   <footer>
-    <p><a :href="AUTHOR_URL">{{AUTHOR_SITE}}</a> / <a href="http://www.faryne.tw/" target="_blank">Faryne</a></p>
+    <p>
+      <a :href="AUTHOR_URL">{{AUTHOR_SITE}}</a> /
+      <a href="http://www.faryne.tw/" target="_blank">Faryne</a>
+    </p>
   </footer>
 </template>
 

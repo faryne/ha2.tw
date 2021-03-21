@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="col-md-3">
+  <b-row>
+    <b-col md="3">
       <form class="form">
         <div class="form-group">
           <label>匯率日期</label>
@@ -16,21 +16,15 @@
             <option selected v-for="(v, k) in currencies" :value="k" :key="v">{{v}} - {{k}}</option>
           </select>
         </div>
-
-<!--        <div class="radio">-->
-<!--          <label><input type="radio" class="" />資料表</label>-->
-<!--          <label><input type="radio" class="" />走勢圖</label>-->
-<!--        </div>-->
-
         <button type="button" class="btn btn-primary" @click="getByDateRange">搜尋</button>
       </form>
-    </div>
-    <div class="col-md-9">
+    </b-col>
+    <b-col md="9">
       <div v-for="(c1, k1) in rates" :key="k1">
         <sub-currency :currency="k1" :rawdata="c1"></sub-currency>
       </div>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
