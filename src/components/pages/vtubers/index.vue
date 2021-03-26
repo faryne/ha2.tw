@@ -19,7 +19,18 @@
           <dd>Subscriptions: {{vtuber.statistics.subscriberCount|numberFormat}}</dd>
           <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
           <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
+          <dd>
+            <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
+              <i class="fa fa-youtube" aria-hidden="true"></i>
+            </b-link>
+            <b-link target="_blank" :href="
+              'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(calendars[vtuber.id]) +
+              '&amp;ctz=' + Intl.DateTimeFormat().resolvedOptions().timeZone">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </b-link>
+          </dd>
         </dl>
+
       </b-col>
       <b-col md="8" lg="9">
         <b-overlay :show="videos_show == false">
@@ -54,6 +65,7 @@ import http from "@/assets/js/http";
 import int from "@/filters/integer";
 import string from "@/filters/string";
 import date from "@/filters/date";
+import axios from "axios";
 export default {
   name: "index",
   data(){
@@ -63,6 +75,7 @@ export default {
       lives: [],
       vtubers_show: false,
       videos_show: false,
+      calendars: {},
     }
   },
   filters: {
@@ -77,13 +90,23 @@ export default {
         default:
           return 'https://www.youtube.com/channel/' + $id;
       }
-    },
+    }
   },
   async created() {
     await this.getVtubers();
     await this.getVideos();
+    await this.getCalendars();
   },
   methods: {
+    async getCalendars(){
+      let req = axios.get("/calendars.json");
+      let resp = await req.then( obj => {
+        return obj;
+      });
+
+      // return resp.data;
+      this.calendars = resp.data;
+    },
     async getVtubers() {
       this.vtubers_show = false;
       let data = await http.get('https://faryne.dev/hololive.json');
@@ -119,5 +142,15 @@ export default {
 }
 .vtuber-avatar {
   margin: 5px;
+}
+.fa {
+  color: red;
+  font-size: 35px;
+}
+.fa:first-child {
+  margin-left: 0;
+}
+.fa:last-child {
+  margin-left: 10px;
 }
 </style>
