@@ -33,27 +33,17 @@
 
       </b-col>
       <b-col md="8" lg="9">
-        <b-overlay :show="videos_show == false">
-          <div v-if="lives.length > 0">
-            <b-media v-for="live in lives" :key="live.video_id">
-              <template #aside>
-                <b-link target="_blank" :href="live.video_id|getYoutubeLink('video')">
-                  <b-img rounded  :src="live.info.snippet.thumbnails.default.url" :alt="live.info.snippet.title" :title="live.info.snippet.title"/>
-                </b-link>
-              </template>
-              <h5 class="mt-0">
-                <b-link target="_blank" :href="live.video_id|getYoutubeLink('video')">
-                  {{live.info.snippet.title}}
-                </b-link>
-                {{live.started_at|returnLocalDate}}
-              </h5>
-              <p>{{live.info.snippet.description|returnLimitWords(0, 100)}}</p>
-            </b-media>
-          </div>
-          <b-card v-else>
-            沒有直播資訊
-          </b-card>
-        </b-overlay>
+        <b-tabs align="center">
+          <b-tab active title="即將開始">
+            <vtuber-lives :channel_id="vtuber.id" :days="7" ref="upcoming_lives"></vtuber-lives>
+          </b-tab>
+          <b-tab title="已結束">
+            <vtuber-lives :channel_id="vtuber.id" :days="-7" ref="ended_lives"></vtuber-lives>
+          </b-tab>
+          <b-tab title="直播時刻表">
+            <calendar :calendar_id="calendars[vtuber.id]"></calendar>
+          </b-tab>
+        </b-tabs>
       </b-col>
 
     </b-row>
@@ -65,6 +55,8 @@ import http from "@/assets/js/http";
 import int from "@/filters/integer";
 import string from "@/filters/string";
 import date from "@/filters/date";
+import VtuberLives from "@/components/pages/vtubers/lives";
+import Calendar from "@/components/elements/Calendar";
 import axios from "axios";
 export default {
   name: "index",
@@ -77,6 +69,10 @@ export default {
       videos_show: false,
       calendars: {},
     }
+  },
+  components: {
+    VtuberLives,
+    Calendar
   },
   filters: {
     numberFormat: int.format,
@@ -94,7 +90,6 @@ export default {
   },
   async created() {
     await this.getVtubers();
-    await this.getVideos();
     await this.getCalendars();
   },
   methods: {
@@ -121,15 +116,12 @@ export default {
           break;
         }
       }
-      await this.getVideos();
+      console.log(this.vtuber.id);
+      this.$refs.upcoming_lives.channelId = this.vtuber.id;
+      this.$refs.upcoming_lives.getVideos();
+      this.$refs.ended_lives.channelId = this.vtuber.id;
+      this.$refs.ended_lives.getVideos();
     },
-    async getVideos () {
-      this.videos_show = false;
-      let vtuber_id = this.vtuber.id;
-      let data = await http.get('/api/opendata/vtubers/yt/' + vtuber_id);
-      this.lives = data.response.lives;
-      this.videos_show = true;
-    }
   }
 }
 </script>
@@ -144,7 +136,6 @@ export default {
   margin: 5px;
 }
 .fa {
-  color: red;
   font-size: 35px;
 }
 .fa:first-child {
@@ -152,5 +143,11 @@ export default {
 }
 .fa:last-child {
   margin-left: 10px;
+}
+.fa.fa-youtube {
+  color: red;
+}
+.fa.fa-calendar {
+  color: #3C72B5;
 }
 </style>
