@@ -11,8 +11,16 @@
           <b-link target="_blank" :href="'https://youtu.be/' + live.video_id">
             {{live.info.snippet.title}}
           </b-link>
-          {{live.started_at|returnLocalDate}}
         </h5>
+        <p>
+          <i class="fa fa-calendar">{{live.started_at|returnLocalDate}}</i><br/>
+          <span v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'">
+            <i class="fa fa-calendar-check-o">{{live.info.liveStreamingDetails.actualStartTime|returnLocalDate}}</i><br/>
+          </span>
+          <span v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'">
+            <i class="fa fa-calendar-times-o">{{live.info.liveStreamingDetails.actualEndTime|returnLocalDate}}</i>
+          </span>
+        </p>
         <p>{{live.info.snippet.description|returnLimitWords(0, 100)}}</p>
       </b-media>
     </div>

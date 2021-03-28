@@ -40,6 +40,9 @@
           <b-tab title="已結束">
             <vtuber-lives :channel_id="vtuber.id" :days="-7" ref="ended_lives"></vtuber-lives>
           </b-tab>
+          <b-tab title="統計">
+            <b-table striped hover :items="stats"></b-table>
+          </b-tab>
           <b-tab title="直播時刻表">
             <calendar :calendar_id="calendars[vtuber.id]"></calendar>
           </b-tab>
@@ -68,6 +71,7 @@ export default {
       vtubers_show: false,
       videos_show: false,
       calendars: {},
+      stats: [],
     }
   },
   components: {
@@ -88,7 +92,7 @@ export default {
       }
     }
   },
-  async created() {
+  async mounted() {
     await this.getVtubers();
     await this.getCalendars();
   },
@@ -116,12 +120,16 @@ export default {
           break;
         }
       }
-      console.log(this.vtuber.id);
+      this.getStats();
       this.$refs.upcoming_lives.channelId = this.vtuber.id;
       this.$refs.upcoming_lives.getVideos();
       this.$refs.ended_lives.channelId = this.vtuber.id;
       this.$refs.ended_lives.getVideos();
     },
+    async getStats(){
+      let data = await http.get('/api/opendata/vtubers/stats/' + this.vtuber.id);
+      this.stats = data.response.stats;
+    }
   }
 }
 </script>
@@ -135,13 +143,12 @@ export default {
 .vtuber-avatar {
   margin: 5px;
 }
-.fa {
-  font-size: 35px;
-}
 .fa:first-child {
+  font-size: 35px;
   margin-left: 0;
 }
 .fa:last-child {
+  font-size: 35px;
   margin-left: 10px;
 }
 .fa.fa-youtube {
