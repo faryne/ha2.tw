@@ -13,9 +13,10 @@
           <vtuber :calendar_id="calendars[vtuber.id]" :vtuber="vtuber"></vtuber>
         </b-overlay>
       </b-col>
+
       <b-col md="9" lg="10">
         <b-overlay :show="videos_show == false">
-          <b-tabs align="center">
+          <b-tabs align="center" style="height: 600px ">
             <b-tab active title="即將開始">
               <vtuber-lives :lives="lives" :days="7" ref="upcoming_lives"></vtuber-lives>
             </b-tab>
@@ -37,9 +38,6 @@
 
 <script>
 import http from "@/assets/js/http";
-import int from "@/filters/integer";
-import string from "@/filters/string";
-import date from "@/filters/date";
 import Vtuber from "@/components/pages/vtubers/vtuber";
 import VtuberLives from "@/components/pages/vtubers/lives";
 import Calendar from "@/components/elements/Calendar";
@@ -62,20 +60,6 @@ export default {
     VtuberLives,
     Calendar,
     Vtuber
-  },
-  filters: {
-    numberFormat: int.format,
-    returnLimitWords: string.returnLimitWords,
-    returnLocalDate: date.returnLocalDate,
-    getYoutubeLink($id, $type){
-      switch ($type) {
-        case 'video':
-          return 'https://www.youtube.com/watch/' + $id;
-        case 'channel':
-        default:
-          return 'https://www.youtube.com/channel/' + $id;
-      }
-    }
   },
   async mounted() {
     await this.getVtubers();
