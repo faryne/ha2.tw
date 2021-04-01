@@ -1,4 +1,5 @@
 <template>
+  <!-- 543b4a4a-9257-4b00-b05f-da2d1e5269fb -->
   <b-container style="margin-top: 20px">
     <b-row v-if="vtubers.length > 0">
       <b-overlay :show="vtubers_show == false">
@@ -9,46 +10,48 @@
     </b-row>
     <b-row style="margin-top: 50px" v-if="vtuber.id !== 'undefined'">
       <b-col md="4" lg="3">
-        <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
-          <b-img rounded :src="vtuber.snippet.thumbnails.medium.url"/>
-        </b-link>
-        <dl>
-          <dt>
-            <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">{{vtuber.snippet.title}}</b-link>
-          </dt>
-          <dd>Subscriptions: {{vtuber.statistics.subscriberCount|numberFormat}}</dd>
-          <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
-          <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
-          <dd>
-            <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
-              <i class="fa fa-youtube" aria-hidden="true"></i>
-            </b-link>
-            <b-link target="_blank" :href="
+        <b-overlay :show="videos_show == false">
+          <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
+            <b-img rounded :src="vtuber.snippet.thumbnails.medium.url"/>
+          </b-link>
+          <dl>
+            <dt>
+              <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">{{vtuber.snippet.title}}</b-link>
+            </dt>
+            <dd>Subscriptions: {{vtuber.statistics.subscriberCount|numberFormat}}</dd>
+            <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
+            <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
+            <dd>
+              <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
+                <i class="fa fa-youtube" aria-hidden="true"></i>
+              </b-link>
+              <b-link target="_blank" :href="
               'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(calendars[vtuber.id]) +
               '&amp;ctz=' + Intl.DateTimeFormat().resolvedOptions().timeZone">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-            </b-link>
-          </dd>
-        </dl>
-
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </b-link>
+            </dd>
+          </dl>
+        </b-overlay>
       </b-col>
       <b-col md="8" lg="9">
-        <b-tabs align="center">
-          <b-tab active title="即將開始">
-            <vtuber-lives :channel_id="vtuber.id" :days="7" ref="upcoming_lives"></vtuber-lives>
-          </b-tab>
-          <b-tab title="已結束">
-            <vtuber-lives :channel_id="vtuber.id" :days="-7" ref="ended_lives"></vtuber-lives>
-          </b-tab>
-          <b-tab title="統計">
-            <b-table striped hover :items="stats"></b-table>
-          </b-tab>
-          <b-tab title="直播時刻表">
-            <calendar :calendar_id="calendars[vtuber.id]"></calendar>
-          </b-tab>
-        </b-tabs>
+        <b-overlay :show="videos_show == false">
+          <b-tabs align="center">
+            <b-tab active title="即將開始">
+              <vtuber-lives :lives="lives" ref="upcoming_lives"></vtuber-lives>
+            </b-tab>
+            <b-tab title="已結束">
+              <vtuber-lives :lives="ended_lives" ref="ended_lives"></vtuber-lives>
+            </b-tab>
+            <b-tab title="統計">
+              <b-table striped hover :items="stats"></b-table>
+            </b-tab>
+            <b-tab title="直播時刻表">
+              <calendar :calendar_id="calendars[vtuber.id]"></calendar>
+            </b-tab>
+          </b-tabs>
+        </b-overlay>
       </b-col>
-
     </b-row>
   </b-container>
 </template>
@@ -68,10 +71,11 @@ export default {
       vtuber: {},
       vtubers: [],
       lives: [],
+      ended_lives: [],
+      stats: [],
+      calendars: {},
       vtubers_show: false,
       videos_show: false,
-      calendars: {},
-      stats: [],
     }
   },
   components: {
@@ -110,8 +114,8 @@ export default {
       this.vtubers_show = false;
       let data = await http.get('https://faryne.dev/hololive.json');
       this.vtubers = data;
+      this.getVtuber(data[0].id);
       this.vtubers_show = true;
-      this.vtuber = data[0];
     },
     async getVtuber($ytId){
       for (let i in this.vtubers) {
@@ -120,15 +124,12 @@ export default {
           break;
         }
       }
-      this.getStats();
-      this.$refs.upcoming_lives.channelId = this.vtuber.id;
-      this.$refs.upcoming_lives.getVideos();
-      this.$refs.ended_lives.channelId = this.vtuber.id;
-      this.$refs.ended_lives.getVideos();
-    },
-    async getStats(){
-      let data = await http.get('/api/opendata/vtubers/stats/' + this.vtuber.id);
+      this.videos_show = false;
+      let data = await http.get('/api/opendata/vtubers/yt/' + this.vtuber.id);
       this.stats = data.response.stats;
+      this.lives = data.response.lives;
+      this.ended_lives = data.response.ended_lives;
+      this.videos_show = true;
     }
   }
 }

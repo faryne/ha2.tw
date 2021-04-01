@@ -1,5 +1,5 @@
 <template>
-  <b-overlay :show="videos_show == false">
+  <div>
     <div v-if="lives.length > 0">
       <b-media v-for="live in lives" :key="live.video_id">
         <template #aside>
@@ -27,46 +27,24 @@
     <b-card v-else>
       沒有直播資訊
     </b-card>
-  </b-overlay>
+  </div>
 </template>
 
 <script>
-import http from "@/assets/js/http";
 import string from "@/filters/string";
 import date from "@/filters/date";
 
 export default {
   name: "lives",
-  data() {
-    return {
-      videos_show: false,
-      lives: [],
-      channelId: this.channel_id,
-    };
-  },
   filters: {
     returnLimitWords: string.returnLimitWords,
     returnLocalDate: date.returnLocalDate,
   },
   async mounted() {
-    await this.getVideos();
-  },
-  methods: {
-    async getVideos () {
-      this.videos_show = false;
-      let data = await http.get('/api/opendata/vtubers/yt/' + this.channelId + "/" + this.days);
-      this.lives = data.response.lives;
-      this.videos_show = true;
-    }
   },
   props: {
-    channel_id: {
+    lives: {
       required: true,
-      type: String,
-    },
-    days: {
-      required: true,
-      type: Number,
     }
   }
 };
