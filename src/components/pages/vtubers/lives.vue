@@ -1,28 +1,22 @@
 <template>
   <div>
     <div v-if="lives.length > 0">
-      <b-media v-for="live in lives" :key="live.video_id">
-        <template #aside>
+      <b-card-group deck style="margin-top: 20px">
+        <b-card
+            v-for="live in lives" :key="live.video_id"
+        >
           <b-link target="_blank" :href="'https://youtu.be/' + live.video_id">
-            <b-img rounded  :src="live.info.snippet.thumbnails.default.url" :alt="live.info.snippet.title" :title="live.info.snippet.title"/>
+            <b-card-img top :src="live.info.snippet.thumbnails.medium.url"></b-card-img>
+            <b-card-title>{{live.info.snippet.title}}</b-card-title>
           </b-link>
-        </template>
-        <h5 class="mt-0">
-          <b-link target="_blank" :href="'https://youtu.be/' + live.video_id">
-            {{live.info.snippet.title}}
-          </b-link>
-        </h5>
-        <p>
-          <i class="fa fa-calendar">{{live.started_at|returnLocalDate}}</i><br/>
-          <span v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'">
-            <i class="fa fa-calendar-check-o">{{live.info.liveStreamingDetails.actualStartTime|returnLocalDate}}</i><br/>
-          </span>
-          <span v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'">
-            <i class="fa fa-calendar-times-o">{{live.info.liveStreamingDetails.actualEndTime|returnLocalDate}}</i>
-          </span>
-        </p>
-        <p>{{live.info.snippet.description|returnLimitWords(0, 100)}}</p>
-      </b-media>
+          <b-card-text>{{live.info.snippet.description|returnLimitWords(0, 100)}}</b-card-text>
+          <template #footer>
+            <i class="fa fa-calendar">{{live.started_at|returnLocalDate}}</i><br/>
+            <i v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'" class="fa fa-calendar-check-o">{{live.info.liveStreamingDetails.actualStartTime|returnLocalDate}}</i><br/>
+            <i v-if="days < 0 && typeof live.info.liveStreamingDetails != 'undefined'" class="fa fa-calendar-times-o">{{live.info.liveStreamingDetails.actualEndTime|returnLocalDate}}</i>
+          </template>
+        </b-card>
+      </b-card-group>
     </div>
     <b-card v-else>
       沒有直播資訊
@@ -45,6 +39,10 @@ export default {
   props: {
     lives: {
       required: true,
+    },
+    days: {
+      required: true,
+      type: Number
     }
   }
 };

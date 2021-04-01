@@ -1,6 +1,5 @@
 <template>
-  <!-- 543b4a4a-9257-4b00-b05f-da2d1e5269fb -->
-  <b-container style="margin-top: 20px">
+  <b-container fluid style="margin-top: 20px">
     <b-row v-if="vtubers.length > 0">
       <b-overlay :show="vtubers_show == false">
         <a href="#" @click.prevent="getVtuber(v.id)" v-for="(v,k) in vtubers" :key="k">
@@ -9,39 +8,19 @@
       </b-overlay>
     </b-row>
     <b-row style="margin-top: 50px" v-if="vtuber.id !== 'undefined'">
-      <b-col md="4" lg="3">
+      <b-col md="3" lg="2">
         <b-overlay :show="videos_show == false">
-          <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
-            <b-img rounded :src="vtuber.snippet.thumbnails.medium.url"/>
-          </b-link>
-          <dl>
-            <dt>
-              <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">{{vtuber.snippet.title}}</b-link>
-            </dt>
-            <dd>Subscriptions: {{vtuber.statistics.subscriberCount|numberFormat}}</dd>
-            <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
-            <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
-            <dd>
-              <b-link target="_blank" :href="vtuber.id|getYoutubeLink('channel')">
-                <i class="fa fa-youtube" aria-hidden="true"></i>
-              </b-link>
-              <b-link target="_blank" :href="
-              'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(calendars[vtuber.id]) +
-              '&amp;ctz=' + Intl.DateTimeFormat().resolvedOptions().timeZone">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </b-link>
-            </dd>
-          </dl>
+          <vtuber :calendar_id="calendars[vtuber.id]" :vtuber="vtuber"></vtuber>
         </b-overlay>
       </b-col>
-      <b-col md="8" lg="9">
+      <b-col md="9" lg="10">
         <b-overlay :show="videos_show == false">
           <b-tabs align="center">
             <b-tab active title="即將開始">
-              <vtuber-lives :lives="lives" ref="upcoming_lives"></vtuber-lives>
+              <vtuber-lives :lives="lives" :days="7" ref="upcoming_lives"></vtuber-lives>
             </b-tab>
             <b-tab title="已結束">
-              <vtuber-lives :lives="ended_lives" ref="ended_lives"></vtuber-lives>
+              <vtuber-lives :lives="ended_lives" :days="-7" ref="ended_lives"></vtuber-lives>
             </b-tab>
             <b-tab title="統計">
               <b-table striped hover :items="stats"></b-table>
@@ -61,6 +40,7 @@ import http from "@/assets/js/http";
 import int from "@/filters/integer";
 import string from "@/filters/string";
 import date from "@/filters/date";
+import Vtuber from "@/components/pages/vtubers/vtuber";
 import VtuberLives from "@/components/pages/vtubers/lives";
 import Calendar from "@/components/elements/Calendar";
 import axios from "axios";
@@ -80,7 +60,8 @@ export default {
   },
   components: {
     VtuberLives,
-    Calendar
+    Calendar,
+    Vtuber
   },
   filters: {
     numberFormat: int.format,
@@ -136,26 +117,5 @@ export default {
 </script>
 
 <style scoped>
-.vtuber-simple {
-  width: 300px;
-  float: left;
-  clear: none;
-}
-.vtuber-avatar {
-  margin: 5px;
-}
-.fa:first-child {
-  font-size: 35px;
-  margin-left: 0;
-}
-.fa:last-child {
-  font-size: 35px;
-  margin-left: 10px;
-}
-.fa.fa-youtube {
-  color: red;
-}
-.fa.fa-calendar {
-  color: #3C72B5;
-}
+
 </style>

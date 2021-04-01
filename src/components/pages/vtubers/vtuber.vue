@@ -1,62 +1,71 @@
 <template>
   <div>
-<!--    <h4>{{vtuber.snippet.title}}</h4>-->
-<!--    <img :src="vtuber.snippet.thumbnails.medium.url" :alt="vtuber.snippet.title" />-->
-<!--    <div>Subscribers: {{vtuber.statistics.subscriberCount | numberFormat}}</div>-->
-<!--    <div>Videos: {{vtuber.statistics.videoCount | numberFormat}}</div>-->
-<!--    <div>View Counts: {{vtuber.statistics.viewCount | numberFormat}}</div>-->
-<!--    <div>Debut Date: {{vtuber.snippet.publishedAt}}</div>-->
-    <div id="lives" v-if="lives.length > 0">
-      <div class="live" v-for="live in lives" :key="live.video_id">
-        <img :src="live.info.snippet.thumbnails.default.url" :alt="live.info.snippet.title" :title="live.info.snippet.title"/>
-        <article>{{live.info.snippet.description}}</article>
-        <time>{{live.started_at}}</time>
-        <time>{{live.published_at}}</time>
-      </div>
-    </div>
-    <div v-else>
-      沒有直播資訊
-    </div>
+    <b-link target="_blank" :href="'https://youtube.com/channel/' + vtuber.id">
+      <b-img rounded :src="vtuber.snippet.thumbnails.medium.url"/>
+    </b-link>
+    <dl>
+      <dt>
+        <b-link target="_blank" :href="'https://youtube.com/channel/' + vtuber.id">
+          {{vtuber.snippet.title}}
+        </b-link>
+      </dt>
+      <dd>Subscriptions: {{vtuber.statistics.subscriberCount|numberFormat}}</dd>
+      <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
+      <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
+      <dd>
+        <b-link target="_blank" :href="'https://youtu.be/channel/' + vtuber.id">
+          <i class="fa fa-youtube" aria-hidden="true"></i>
+        </b-link>
+        <b-link target="_blank" :href="
+              'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(calendar_id) +
+              '&amp;ctz=' + Intl.DateTimeFormat().resolvedOptions().timeZone">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
+        </b-link>
+      </dd>
+    </dl>
   </div>
 </template>
 
 <script>
-import http from "@/assets/js/http";
 import int from "@/filters/integer"
-import string from "@/filters/string";
 export default {
   name: "vtuber",
-  created() {
-    this.getVtuber()
-  },
   filters: {
     numberFormat: int.format,
-    renderHTML: string.renderHTML
   },
-  data() {
-    return {
-      vtuber: {},
-      lives: [],
-    }
-  },
-  methods: {
-    async getVtuber () {
-      let vtuber_id = this.$route.params['id'];
-      console.log(vtuber_id);
-      let data = await http.get('/api/opendata/vtubers/yt/' + vtuber_id);
-      // this.vtuber = data.response.info;
-      this.lives = data.response.lives;
-      console.log(this.lives);
+  props: {
+    vtuber: {
+      required: true,
+      type: Object,
+    },
+    calendar_id: {
+      required: true
     }
   }
 }
 </script>
 
 <style scoped>
-.live {
-  clear: none;
+.vtuber-simple {
+  width: 300px;
   float: left;
-  width: 100px;
-  margin: 10px;
+  clear: none;
+}
+.vtuber-avatar {
+  margin: 5px;
+}
+.fa:first-child {
+  font-size: 35px;
+  margin-left: 0;
+}
+.fa:last-child {
+  font-size: 35px;
+  margin-left: 10px;
+}
+.fa.fa-youtube {
+  color: red;
+}
+.fa.fa-calendar {
+  color: #3C72B5;
 }
 </style>
