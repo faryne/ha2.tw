@@ -14,8 +14,10 @@ import Header from "@/components/elements/Header";
 import Footer from "@/components/elements/Footer";
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Embed from 'v-video-embed';
 
 Vue.use(VueLoading);
+Vue.use(Embed);
 
 export default {
   name: 'App',

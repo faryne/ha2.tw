@@ -30,6 +30,7 @@
 import string from "@/filters/string";
 import date from "@/filters/date";
 
+
 export default {
   name: "lives",
   filters: {
@@ -37,7 +38,6 @@ export default {
     returnLocalDate: date.returnLocalDate,
   },
   components: {
-    // VueFlexWaterfall
   },
   methods: {
     async playVideo($video_id){
