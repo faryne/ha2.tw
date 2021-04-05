@@ -1,39 +1,50 @@
 <template>
   <div class="currrency-item">
-    <b-card>
-      <b-card-header>{{currency}}</b-card-header>
-      <b-card-body>
-        <div v-for="(data,key) in rawdata" :key="key">
-          <h5>{{key}}</h5>
-          <b-table striped hover :items="data"></b-table>
-        </div>
-      </b-card-body>
-    </b-card>
-<!--    <h4>{{currency}}</h4>-->
-<!--    <div class="data-items" v-for="(d1, k1) in rawdata" :key="k1">-->
-<!--      {{k1}}-->
-<!--      <b-tabs>-->
-<!--        <b-tab v-for="(d2, k2) in d1" :title="k2" :key="k1 + '&#45;&#45;' + k2">-->
-<!--          <b-table striped hover :items="d2"></b-table>-->
-<!--        </b-tab>-->
-<!--      </b-tabs>-->
-<!--    </div>-->
-
-<!--    <div class="date-items">-->
-<!--      <h5>{{k1}}</h5>-->
-<!--      <dl>-->
-<!--        <dt>{{currency}}</dt>-->
-<!--        <dd v-for="(d2, k2) in d1" :key="k2">-->
-<!--          {{k2}} - {{d2.buy_rate}} - {{d2.sell_rate}}-->
-<!--        </dd>-->
-<!--      </dl>-->
-<!--    </div>-->
+    <b-card-group deck v-if="show_type=='table'">
+      <b-card v-for="(data,key) in rawdata" :key="key">
+        <b-card-title align="center">{{key|getBankName}}</b-card-title>
+        <b-card-body>
+          <b-table
+              striped hover :items="data"
+              :fields="[
+                  {
+                    key: 'record_date',
+                    label: '日期'
+                  },
+                  {
+                    key: 'buy_rate',
+                    label: '買入價',
+                    sortable: true
+                  },
+                  {
+                    key: 'sell_rate',
+                    label: '賣出價',
+                    sortable: true
+                  }
+              ]"
+          >
+          </b-table>
+        </b-card-body>
+      </b-card>
+    </b-card-group>
+    <g-chart v-else type="LineChart" :data="rawdata" :options="{title: ''}"></g-chart>
   </div>
 </template>
 
 <script>
+import currency from "@/assets/js/currency";
+import { GChart } from 'vue-google-charts';
+
 export default {
   name: "SubCurrency",
+  filters: {
+    getBankName: function($obj){
+      return currency.banks[$obj];
+    }
+  },
+  components: {
+    GChart
+  },
   props: {
     currency: {
       type: String,
@@ -42,26 +53,15 @@ export default {
     rawdata: {
       type: Object,
       required: true
+    },
+    show_type: {
+      type: String,
+      required: true
     }
   }
 }
 </script>
 
 <style scoped>
-dl {
-  display: table-cell;
-  float: left;
-  clear: none;
-  padding: 3px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  width: 270px;
-}
-dt {
-  display: table-caption;
-  text-align: center;
-}
-dd {
-  display: table;
-}
+
 </style>

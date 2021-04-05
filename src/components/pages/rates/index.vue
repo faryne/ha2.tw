@@ -16,13 +16,23 @@
             <option selected v-for="(v, k) in currencies" :value="k" :key="v">{{v}} - {{k}}</option>
           </select>
         </div>
+<!--        <b-form-group>-->
+<!--          <b-form-radio-group :model="show_type">-->
+<!--            <b-form-radio value="table" :checked="show_type == 'table'">列表</b-form-radio>-->
+<!--            <b-form-radio value="chart" :checked="show_type == 'chart'">曲線圖</b-form-radio>-->
+<!--          </b-form-radio-group>-->
+<!--        </b-form-group>-->
         <button type="button" class="btn btn-primary" @click="getByDateRange">搜尋</button>
       </form>
     </b-col>
     <b-col md="9">
-      <div v-for="(c1, k1) in rates" :key="k1">
-        <sub-currency :currency="k1" :rawdata="c1"></sub-currency>
-      </div>
+      <b-overlay :show="show">
+        <b-tabs>
+          <b-tab v-for="(c1, k1) in rates" :key="k1" :title="k1|getCurrencyName">
+            <sub-currency :currency="k1" :rawdata="c1" :show_type="show_type"></sub-currency>
+          </b-tab>
+        </b-tabs>
+      </b-overlay>
     </b-col>
   </b-row>
 </template>
@@ -49,13 +59,22 @@ export default {
       end_date: d1.toString(),
       cur: [],
       banks: currency.banks,
-      currencies: currency.currencies
+      currencies: currency.currencies,
+      show: true,
+      show_type: 'table'
     };
+  },
+  filters: {
+    getCurrencyName: function($obj){
+      return currency.currencies[$obj];
+    }
   },
   methods: {
     async getLatest(){
+      this.show = true;
       let req = await http.get("/api/opendata/rates/v2?begin_date=" + d1);
       this.rates = req.response.rates;
+      this.show = false;
     },
     async getByDateRange() {
       let params = [];
@@ -75,8 +94,10 @@ export default {
         url += "?" + params.join("&");
       }
 
+      this.show = true;
       let req = await http.get(url)
       this.rates = req.response.rates;
+      this.show = false;
     }
   }
 
