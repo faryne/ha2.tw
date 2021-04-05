@@ -3,7 +3,7 @@
     <div v-if="lives.length > 0">
       <b-card
           v-for="live in lives" :key="live.video_id"
-          style="max-width: 240px; margin: 10px; float: left;max-height: 600px"
+          style="max-width: 240px; margin: 10px; float: left;"
       >
         <b-link target="_blank" @click.prevent="playVideo(live.video_id)">
           <b-card-img top :src="live.info.snippet.thumbnails.medium.url" :title="live.info.snippet.title" :alt="live.info.snippet.title"></b-card-img>

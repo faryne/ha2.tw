@@ -13,7 +13,7 @@
       <dd>Video Counts: {{vtuber.statistics.videoCount|numberFormat}}</dd>
       <dd>View Counts: {{vtuber.statistics.viewCount|numberFormat}}</dd>
       <dd>
-        <b-link target="_blank" :href="'https://youtu.be/channel/' + vtuber.id">
+        <b-link target="_blank" :href="'https://youtube.com/channel/' + vtuber.id">
           <i class="fa fa-youtube" aria-hidden="true"></i>
         </b-link>
         <b-link target="_blank" :href="
