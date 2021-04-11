@@ -16,13 +16,9 @@
             <option selected v-for="(v, k) in currencies" :value="k" :key="v">{{v}} - {{k}}</option>
           </select>
         </div>
-<!--        <b-form-group>-->
-<!--          <b-form-radio-group :model="show_type">-->
-<!--            <b-form-radio value="table" :checked="show_type == 'table'">列表</b-form-radio>-->
-<!--            <b-form-radio value="chart" :checked="show_type == 'chart'">曲線圖</b-form-radio>-->
-<!--          </b-form-radio-group>-->
-<!--        </b-form-group>-->
-        <button type="button" class="btn btn-primary" @click="getByDateRange">搜尋</button>
+        <button type="button" class="btn btn-primary" @click="getByDateRange">
+          <i class="fa fa-search-dollar">搜尋</i>
+        </button>
       </form>
     </b-col>
     <b-col md="9">

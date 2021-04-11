@@ -4,13 +4,19 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item>二次元</b-nav-item>
-        <b-nav-item>方便工具</b-nav-item>
-        <b-nav-item>政府資料</b-nav-item>
-        <b-nav-item>無法歸類的玩具</b-nav-item>
-        <b-nav-item>
-          <a href="http://program.faryne.tw/">Faryne 的程式設計館</a>
-        </b-nav-item>
+        <b-nav-item-dropdown text="二次元">
+          <b-dropdown-item href="https://nekomaid.web.app">難以名狀的抓圖器</b-dropdown-item>
+          <b-dropdown-item href="http://ha2.tw/moe_imouto">二次元常用英文 TAG</b-dropdown-item>
+          <b-dropdown-item href="/hololive">Hololive Schedules</b-dropdown-item>
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown text="方便工具">
+          <b-nav-item href="/rates">匯率</b-nav-item>
+        </b-nav-item-dropdown>
+<!--        <b-nav-item-dropdown text="政府資料">-->
+<!--          <b-nav-item href="https://ha2.tw/energy">台電用電量、各能源發電量及敦親睦鄰等資料</b-nav-item>-->
+<!--        </b-nav-item-dropdown>-->
+<!--        <b-nav-item>無法歸類的玩具</b-nav-item>-->
+        <b-nav-item href="http://program.faryne.tw/">Faryne 的程式設計館</b-nav-item>
       </b-navbar-nav>
 
     </b-collapse>

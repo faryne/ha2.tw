@@ -1,12 +1,12 @@
 <template>
-  <div class="currrency-item">
-    <b-card-group deck v-if="show_type=='table'">
-      <b-card v-for="(data,key) in rawdata" :key="key">
-        <b-card-title align="center">{{key|getBankName}}</b-card-title>
-        <b-card-body>
-          <b-table
-              striped hover :items="data"
-              :fields="[
+  <div class="currrency-item"  style="margin-top:10px">
+    <b-tabs vertical pills>
+      <b-tab v-for="(data,key) in rawdata" :key="'a' + key" :title="key|getBankName">
+        <b-row>
+          <b-col md="6">
+            <b-table
+                striped hover :items="data"
+                :fields="[
                   {
                     key: 'record_date',
                     label: '日期'
@@ -22,12 +22,15 @@
                     sortable: true
                   }
               ]"
-          >
-          </b-table>
-        </b-card-body>
-      </b-card>
-    </b-card-group>
-    <g-chart v-else type="LineChart" :data="rawdata" :options="{title: ''}"></g-chart>
+            >
+            </b-table>
+          </b-col>
+          <b-col md="6">
+            <g-chart style="width:100%" type="LineChart" :data="data|singleBankRate" :options="{title: '曲線圖'}"></g-chart>
+          </b-col>
+        </b-row>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
@@ -40,10 +43,27 @@ export default {
   filters: {
     getBankName: function($obj){
       return currency.banks[$obj];
-    }
+    },
+    singleBankRate(input){
+      let data = [
+          ["日期", "買入價", "賣出價"]
+      ];
+
+      for (let i in input) {
+        data.push([
+            input[i].record_date,
+            input[i].buy_rate,
+            input[i].sell_rate
+        ])
+      }
+
+      return data;
+    },
   },
   components: {
     GChart
+  },
+  computed: {
   },
   props: {
     currency: {
