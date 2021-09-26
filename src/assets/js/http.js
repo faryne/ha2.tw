@@ -26,6 +26,18 @@ export default {
         return resp.data;
     },
 
+    async customGet(url, query, config) {
+        let loader = Vue.$loading.show();
+        let req = axios.get(url, query, config);
+        loader.hide();
+
+        let resp = await req.then( obj => {
+            return obj;
+        });
+
+        return resp.data;
+    },
+
     async post(url, params, config) {
         let uri = this.checkHost(url);
         let req = axios.post(uri, params, config)

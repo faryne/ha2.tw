@@ -12,8 +12,8 @@
     </div>
     <div id="search-conditions" class="col-sm-3">
       <div class="tab">
-        <a :class="{ tablinks: true, active: PageType == 'video' }" href="/#/dmm/videos">影片搜尋</a>
-        <a :class="{ tablinks: true, active: PageType == 'actress' }" href="/#/dmm/actresses">女優搜尋</a>
+        <a :class="{ tablinks: true, active: PageType == 'video' }" href="/dmm/videos">影片搜尋</a>
+        <a :class="{ tablinks: true, active: PageType == 'actress' }" href=" /dmm/actresses">女優搜尋</a>
       </div> 
       <side-bar :PageType="PageType"></side-bar>
     </div>

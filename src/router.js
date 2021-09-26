@@ -40,6 +40,11 @@ const routes = [
             PageType: "actress"
         }
     },
+    {
+        name: "twstats.main",
+        path: "/tw-stats",
+        component: () => import("./components/pages/twstats/index")
+    },
     // 預設首頁
     {
         "name": "main",
