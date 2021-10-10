@@ -24,28 +24,7 @@
             <th>民國年度</th>
             <th>總計</th>
             <th>臺灣地區</th>
-            <th>新北市</th>
-            <th>臺北市</th>
-            <th>桃園市</th>
-            <th>臺中市</th>
-            <th>臺南市</th>
-            <th>高雄市</th>
-            <th>宜蘭縣</th>
-            <th>新竹縣</th>
-            <th>苗栗縣</th>
-            <th>彰化縣</th>
-            <th>南投縣</th>
-            <th>雲林縣</th>
-            <th>嘉義縣</th>
-            <th>屏東縣</th>
-            <th>臺東縣</th>
-            <th>花蓮縣</th>
-            <th>澎湖縣</th>
-            <th>基隆市</th>
-            <th>新竹市</th>
-            <th>嘉義市</th>
-            <th>金門縣</th>
-            <th>連江縣</th>
+            <th v-for="city in cities" :key="city">{{city}}</th>
           </tr>
         </thead>
         <tbody>
@@ -53,31 +32,13 @@
             <td>{{d.ByYear}}</td>
             <td>{{d.Total}}</td>
             <td>{{d.Taiwan}}</td>
-            <td>{{d.NewTaipei}}</td>
-            <td>{{d.Taipei}}</td>
-            <td>{{d.Taoyuan}}</td>
-            <td>{{d.Taichung}}</td>
-            <td>{{d.Tainan}}</td>
-            <td>{{d.Kaohsiung}}</td>
-            <td>{{d.Ilan}}</td>
-            <td>{{d.HsinchuCounty}}</td>
-            <td>{{d.Miaoli}}</td>
-            <td>{{d.Changhwa}}</td>
-            <td>{{d.Nantou}}</td>
-            <td>{{d.Yunlin}}</td>
-            <td>{{d.ChiaYiCounty}}</td>
-            <td>{{d.Pingtung}}</td>
-            <td>{{d.Taitung}}</td>
-            <td>{{d.Hualien}}</td>
-            <td>{{d.Penghu}}</td>
-            <td>{{d.Keelung}}</td>
-            <td>{{d.HsinchuCity}}</td>
-            <td>{{d.ChiaYiCity}}</td>
-            <td>{{d.Kinmen}}</td>
-            <td>{{d.Matsu}}</td>
+            <td v-for="(city,k) in cities" :key="city">{{d[k]}}</td>
           </tr>
         </tbody>
       </table>
+      <div v-if="data != null">
+        <g-chart style="height:200px" type="LineChart" :data="tableData" :options="tableOption"></g-chart>
+      </div>
     </b-col>
   </b-row>
 </div>
@@ -92,6 +53,7 @@
 <script charset="UTF-8">
 import axios from "axios";
 const BaseUrl = "https://raw.githubusercontent.com/faryne/tw-stats/master/docs";
+import { GChart } from 'vue-google-charts';
 export default {
   name: "index",
   data() {
@@ -102,8 +64,64 @@ export default {
       metricUnit: null,
       metricDefinition: null,
       myfilter: "",
-      baseUrl: BaseUrl
+      baseUrl: BaseUrl,
+      cities: {
+        "NewTaipei": "新北市",
+        "Taipei": "臺北市",
+        "Taoyuan": "桃園市",
+        "Taichung": "臺中市",
+        "Tainan": "臺南市",
+        "Kaohsiung": "高雄市",
+        "Ilan": "宜蘭縣",
+        "HsinchuCounty": "新竹縣",
+        "Miaoli": "苗栗縣",
+        "Changhwa": "彰化縣",
+        "Nantou": "南投縣",
+        "Yunlin": "雲林縣",
+        "ChiaYiCounty": "嘉義縣",
+        "Pingtung": "屏東縣",
+        "Taitung": "臺東縣",
+        "Hualien": "花蓮縣",
+        "Penghu": "澎湖縣",
+        "Keelung": "基隆市",
+        "HsinchuCity": "新竹市",
+        "ChiaYiCity": "嘉義市",
+        "Kinmen": "金門縣",
+        "Matsu": "連江縣"
+      },
     };
+  },
+  computed: {
+    tableOption: function() {
+      return {
+        title: this.metricName,
+      }
+    },
+    tableData: function(){
+      let obj = [];
+      if (this.data != null) {
+        let header = ["年度"];
+        for (let i in this.cities) {
+          header.push(this.cities[i]);
+        }
+        obj.push(header);
+        for (let i in this.data) {
+          let tmp = [i];
+          for (let k in this.cities) {
+            let v = 0;
+            if (parseFloat(this.data[i][k], 10) != isNaN) {
+              v = parseFloat(this.data[i][k], 10);
+            }
+            tmp.push(v);
+          }
+          obj.push(tmp);
+        }
+        console.log(obj);
+      }
+
+      console.log(obj);
+      return obj;
+    }
   },
   async mounted() {
     let req = axios.get(BaseUrl + "/index.json");
@@ -111,6 +129,9 @@ export default {
       return obj;
     });
     this.metrics = resp.data;
+  },
+  components:{
+    GChart
   },
   methods: {
     showMetric(target) {

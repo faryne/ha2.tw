@@ -11,12 +11,9 @@
         </b-nav-item-dropdown>
         <b-nav-item-dropdown text="方便工具">
           <b-nav-item href="/rates">匯率</b-nav-item>
+          <b-nav-item href="/tw-stats">台灣指標</b-nav-item>
         </b-nav-item-dropdown>
-<!--        <b-nav-item-dropdown text="政府資料">-->
-<!--          <b-nav-item href="https://ha2.tw/energy">台電用電量、各能源發電量及敦親睦鄰等資料</b-nav-item>-->
-<!--        </b-nav-item-dropdown>-->
-<!--        <b-nav-item>無法歸類的玩具</b-nav-item>-->
-        <b-nav-item href="http://program.faryne.tw/">Faryne 的程式設計館</b-nav-item>
+        <b-nav-item href="https://blog.faryne.dev/">Faryne 的程式設計館</b-nav-item>
       </b-navbar-nav>
 
     </b-collapse>
