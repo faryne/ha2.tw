@@ -17,7 +17,7 @@
               指標名稱：{{metricName}}<br/>
               指標定義：{{metricDefinition}}<br/>
               單位：{{metricUnit}}<br/>
-              <b-link :href='baseUrl + "/" + metricName + ".json"'>JSON</b-link>
+              <b-link :href='baseUrl + "/" + metricName + "/index.json"'>JSON</b-link>
             </th>
           </tr>
           <tr>
