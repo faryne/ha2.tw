@@ -45,6 +45,11 @@ const routes = [
         path: "/tw-stats",
         component: () => import("./components/pages/twstats/index")
     },
+    {
+        name: "year.main",
+        path: "/progress-year",
+        component: () => import("./components/pages/timer/index")
+    },
     // 預設首頁
     {
         "name": "main",
