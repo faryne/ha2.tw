@@ -12,6 +12,7 @@
         <b-nav-item-dropdown text="方便工具">
           <b-nav-item href="/rates">匯率</b-nav-item>
           <b-nav-item href="/tw-stats">台灣指標</b-nav-item>
+          <b-nav-item href="/telegraph">過往新聞</b-nav-item>
         </b-nav-item-dropdown>
         <b-nav-item href="https://blog.faryne.dev/">Faryne 的程式設計館</b-nav-item>
       </b-navbar-nav>

@@ -43,7 +43,7 @@
               </b-row>
             </b-tab>
             <b-tab title="直播時刻表">
-              <calendar :calendar_id="calendars[vtuber.id]"></calendar>
+              <calendar :calendar_id="calendars[vtuber.id].id"></calendar>
             </b-tab>
           </b-tabs>
         </b-overlay>

@@ -5,6 +5,11 @@ Vue.use(VueRouter)
 
 const routes = [
     {
+        name: "telegraph",
+        path:"/telegraph",
+        component: () => import("./components/pages/telegraph/index")
+    },
+    {
         name: "rates",
         path: "/rates",
         component: () => import("./components/pages/rates/index")

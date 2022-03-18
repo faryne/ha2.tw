@@ -26,9 +26,9 @@ export default {
         return resp.data;
     },
 
-    async customGet(url, query, config) {
+    async customGet(url, query) {
         let loader = Vue.$loading.show();
-        let req = axios.get(url, query, config);
+        let req = axios.get(url, {params: query});
         loader.hide();
 
         let resp = await req.then( obj => {
